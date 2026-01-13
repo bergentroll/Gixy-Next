@@ -39,4 +39,6 @@ If your NGINX already defaults to 1000, you can also omit the directive and keep
 
 ## Additional notes
 
-The "right" number depends on your traffic and timeouts, but the takeaway is simple: avoid values that force constant reconnecting. If you are tuning performance, look at `keepalive_timeout` and (for upstream keepalive) the `keepalive` directive in `upstream` blocks as well. For more information about when this error can show up, read [this post](https://joshua.hu/http2-burp-proxy-mitmproxy-nginx-failing-load-resources-chromium).
+The "right" number depends on your traffic and timeouts, but the takeaway is simple: avoid values that force constant reconnecting. If you are tuning performance, look at `keepalive_timeout` and (for upstream keepalive) the `keepalive` directive in `upstream` blocks as well.
+
+In some systems like Burp Proxy, receiving the error "Stream failed to close correctly" indicates that the configuration of the server is using a too-low value of `keepalive_requests`. In mitm-proxy, this error is described as "HTTP/2 protocol error: Invalid ConnectionInputs.RECV_HEADERS in state ConnectionState.CLOSED". If you are unable to change the server configuration, you may also disable HTTP/2 in the browser / proxy. For more information about when this error can show up, read [this post](https://joshua.hu/http2-burp-proxy-mitmproxy-nginx-failing-load-resources-chromium).
