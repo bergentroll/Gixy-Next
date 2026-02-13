@@ -48,3 +48,38 @@ def test_pcre_verb_with_regex():
     assert result is not None
     # First token should be at_beginning (^)
     assert result[0][0] == 'at'
+
+
+def test_inline_flags_single():
+    """Test inline flag with scoped group: (?i:pattern)."""
+    config = "(?i:hello)"
+    result = sre_parse.parse(config)
+    assert len(result) == 1
+    assert result[0][0] == "subpattern"
+    assert result[0][1][0] is None  # Non-capturing group
+
+
+def test_inline_flags_with_nested_group():
+    """Test inline flag with nested capturing group: (?i:(cs|cz))."""
+    config = "^(?i:(cs|cz))"
+    result = sre_parse.parse(config)
+    assert result is not None
+    assert result[0][0] == "at"
+    assert result[1][0] == "subpattern"
+    assert result[1][1][0] is None  # Non-capturing
+
+
+def test_inline_flags_multiple():
+    """Test multiple inline flags: (?im:pattern)."""
+    config = "(?im:hello)"
+    result = sre_parse.parse(config)
+    assert len(result) == 1
+    assert result[0][0] == "subpattern"
+
+
+def test_global_flags_still_work():
+    """Ensure global flag syntax (?i) still works."""
+    config = "(?i)hello"
+    result = sre_parse.parse(config)
+    assert len(result) == 5
+    assert all(token[0] == "literal" for token in result)
