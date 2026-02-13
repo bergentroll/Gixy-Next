@@ -4,6 +4,11 @@ on:
   push:
     branches:
       - master
+    paths:
+      - "docs/**"
+      - "mkdocs.yml"
+      - "README.md"
+      - "gixy/__init__.py"
 
 permissions:
   contents: write
