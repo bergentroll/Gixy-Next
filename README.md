@@ -103,6 +103,7 @@ Gixy-Next can detect a wide range of NGINX security and performance misconfigura
 *   [[return_bypasses_allow_deny] Return directive bypasses allow/deny restrictions](https://gixy.io/plugins/return_bypasses_allow_deny/)
 *   [[ssrf] Server Side Request Forgery](https://gixy.io/plugins/ssrf/)
 *   [[stale_dns_cache] Outdated/stale cached DNS records used in proxy_pass](https://gixy.io/plugins/stale_dns_cache/)
+*   [[status_page_exposed] Ensures that status_page is not exposed to the world](https://gixy.io/plugins/status_page_exposed/)
 *   [[try_files_is_evil_too] `try_files` directive is evil without open_file_cache](https://gixy.io/plugins/try_files_is_evil_too/)
 *   [[unanchored_regex] Unanchored regular expressions](https://gixy.io/plugins/unanchored_regex/)
 *   [[valid_referers] none in valid_referers](https://gixy.io/plugins/valid_referers/)
