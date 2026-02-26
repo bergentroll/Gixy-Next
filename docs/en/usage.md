@@ -54,6 +54,38 @@ This workflow is especially handy when:
 * You want your CI pipeline to scan exactly what NGINX is loading
 * You are auditing production config without giving the scanner direct filesystem access
 
+## Scan with Docker
+
+Gixy-Next is available as a Docker image from [Docker Hub](https://hub.docker.com/r/megamansec/gixy-next/) or [GitHub Registry](https://github.com/MegaManSec/Gixy-Next/pkgs/container/gixy-next).
+
+Scan a local config file by mounting it into the container:
+
+```bash
+# Use GitHub Registry
+docker run --rm -v "$PWD/nginx.conf:/nginx.conf:ro" ghcr.io/megamansec/gixy-next /nginx.conf
+# Or Docker Hub
+docker run --rm -v "$PWD/nginx.conf:/nginx.conf:ro" megamansec/gixy-next /nginx.conf
+```
+
+Scan an NGINX live configuration dump:
+
+```bash
+nginx -T > ./nginx-dump.conf
+# Use GitHub Registry
+docker run --rm -v "$PWD/nginx-dump.conf:/nginx-dump.conf:ro" ghcr.io/megamansec/gixy-next /nginx-dump.conf
+# Or Docker Hub
+docker run --rm -v "$PWD/nginx-dump.conf:/nginx-dump.conf:ro" megamansec/gixy-next /nginx-dump.conf
+```
+
+Scan from stdin:
+
+```bash
+# Use GitHub Registry
+nginx -T | docker run --rm -i ghcr.io/megamansec/gixy-next -
+# Or Docker Hub
+nginx -T | docker run --rm -i megamansec/gixy-next -
+```
+
 ## Severity filtering
 
 By default, `gixy` reports everything it finds. If you only care about higher-severity issues, use `-l` repeats:

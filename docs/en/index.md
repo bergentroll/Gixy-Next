@@ -48,6 +48,38 @@ cat ./nginx-dump.conf | gixy -
 
 Instead of downloading and running Gixy-Next locally, you can use [this webpage](https://gixy.io/scanner/) and scan a configuration from your web browser (locally, using WebAssembly).
 
+### Scan with Docker
+
+Gixy-Next is available as a Docker image from [Docker Hub](https://hub.docker.com/r/megamansec/gixy-next/) or [GitHub Registry](https://github.com/MegaManSec/Gixy-Next/pkgs/container/gixy-next).
+
+Scan a local config file by mounting it into the container:
+
+```bash
+# Use Github Registry
+docker run --rm -v "$PWD/nginx.conf:/nginx.conf:ro" ghcr.io/megamansec/gixy-next /nginx.conf
+# Or Docker Hub
+docker run --rm -v "$PWD/nginx.conf:/nginx.conf:ro" megamansec/gixy-next /nginx.conf
+```
+
+Scan an NGINX live configuration dump:
+
+```bash
+nginx -T > ./nginx-dump.conf
+# Use Github Registry
+docker run --rm -v "$PWD/nginx-dump.conf:/nginx-dump.conf:ro" ghcr.io/megamansec/gixy-next /nginx-dump.conf
+# Or Docker Hub
+docker run --rm -v "$PWD/nginx-dump.conf:/nginx-dump.conf:ro" megamansec/gixy-next /nginx-dump.conf
+```
+
+Scan from stdin:
+
+```bash
+# Use Github Registry
+nginx -T | docker run --rm -i ghcr.io/megamansec/gixy-next -
+# Or Docker Hub
+nginx -T | docker run --rm -i megamansec/gixy-next -
+```
+
 ## What it can do
 
 Gixy-Next can detect a wide range of NGINX security and performance misconfigurations across `nginx.conf` and included configuration files. The following plugins are supported:
