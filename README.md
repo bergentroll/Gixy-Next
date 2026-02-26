@@ -15,7 +15,6 @@ Gixy-Next (the `gixy` or `gixy-next` CLI) is distributed on [PyPI](https://pypi.
 ```shell-session
 # pip
 pip3 install gixy-next
-
 # uv
 uv pip install gixy-next
 ```
@@ -25,7 +24,6 @@ You can then run it:
 ```shell-session
 # gixy defaults to reading /etc/nginx/nginx.conf
 gixy
-
 # But you can also specify a path to the configuration
 gixy /opt/nginx.conf
 ```
@@ -35,7 +33,6 @@ You can also export your NGINX configuration to a single dump file (see [nginx -
 ```shell-session
 # Dumps the full NGINX configuration into a single file (including all includes)
 nginx -T > ./nginx-dump.conf
-
 # Scan the dump elsewhere (or via stdin):
 gixy ./nginx-dump.conf
 # or
@@ -52,7 +49,7 @@ Gixy-Next is available as a Docker image from [Docker Hub](https://hub.docker.co
 
 Scan a local config file by mounting it into the container:
 
-```bash
+```shell-session
 # Use Github Registry
 docker run --rm -v "$PWD/nginx.conf:/nginx.conf:ro" ghcr.io/megamansec/gixy-next /nginx.conf
 # Or Docker Hub
@@ -61,7 +58,8 @@ docker run --rm -v "$PWD/nginx.conf:/nginx.conf:ro" megamansec/gixy-next /nginx.
 
 Scan an NGINX live configuration dump:
 
-```bash
+```shell-session
+# Dumps the full NGINX configuration into a single file (including all includes)
 nginx -T > ./nginx-dump.conf
 # Use Github Registry
 docker run --rm -v "$PWD/nginx-dump.conf:/nginx-dump.conf:ro" ghcr.io/megamansec/gixy-next /nginx-dump.conf
@@ -71,11 +69,11 @@ docker run --rm -v "$PWD/nginx-dump.conf:/nginx-dump.conf:ro" megamansec/gixy-ne
 
 Scan from stdin:
 
-```bash
+```shell-session
 # Use Github Registry
-nginx -T | docker run --rm -i ghcr.io/megamansec/gixy-next -
+nginx -T | docker run --rm -i ghcr.io/megamansec/gixy-next gixy-next -
 # Or Docker Hub
-nginx -T | docker run --rm -i megamansec/gixy-next -
+nginx -T | docker run --rm -i megamansec/gixy-next gixy-next -
 ```
 
 ## What it can do

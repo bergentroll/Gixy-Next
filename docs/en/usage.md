@@ -15,17 +15,16 @@ Gixy-Next ships as the `gixy` and `gixy-next` CLI. It statically analyzes NGINX 
 
 If you have a standard NGINX install, this is usually enough:
 
-```bash
+```shell-session
 # By-default scans /etc/nginx/nginx.conf
 gixy
 ```
 
 `gixy` can also read from a specific file, or even from stdin:
 
-```bash
+```shell-session
 # Scan a specific file
 gixy /opt/nginx/nginx.conf
-
 # pipe into gixy and read from stdin
 cat /opt/nginx/nginx.conf | gixy -
 ```
@@ -36,14 +35,14 @@ One of the easiest ways to get consistent results from `gixy` is to scan the ful
 
 On the machine that has NGINX (or inside your NGINX container):
 
-```bash
+```shell-session
 # Dump the full rendered/live NGINX config to a single file
 nginx -T > nginx-dump.conf
 ```
 
 Then you can copy `nginx-dump.conf` anywhere and scan it there:
 
-```bash
+```shell-session
 # Scan the NGINX dump file ./nginx-dump.conf
 gixy ./nginx-dump.conf
 ```
@@ -60,7 +59,7 @@ Gixy-Next is available as a Docker image from [Docker Hub](https://hub.docker.co
 
 Scan a local config file by mounting it into the container:
 
-```bash
+```shell-session
 # Use GitHub Registry
 docker run --rm -v "$PWD/nginx.conf:/nginx.conf:ro" ghcr.io/megamansec/gixy-next /nginx.conf
 # Or Docker Hub
@@ -69,7 +68,7 @@ docker run --rm -v "$PWD/nginx.conf:/nginx.conf:ro" megamansec/gixy-next /nginx.
 
 Scan an NGINX live configuration dump:
 
-```bash
+```shell-session
 nginx -T > ./nginx-dump.conf
 # Use GitHub Registry
 docker run --rm -v "$PWD/nginx-dump.conf:/nginx-dump.conf:ro" ghcr.io/megamansec/gixy-next /nginx-dump.conf
@@ -79,18 +78,18 @@ docker run --rm -v "$PWD/nginx-dump.conf:/nginx-dump.conf:ro" megamansec/gixy-ne
 
 Scan from stdin:
 
-```bash
+```shell-session
 # Use GitHub Registry
-nginx -T | docker run --rm -i ghcr.io/megamansec/gixy-next -
+nginx -T | docker run --rm -i ghcr.io/megamansec/gixy-next gixy-next -
 # Or Docker Hub
-nginx -T | docker run --rm -i megamansec/gixy-next -
+nginx -T | docker run --rm -i megamansec/gixy-next gixy-next -
 ```
 
 ## Severity filtering
 
 By default, `gixy` reports everything it finds. If you only care about higher-severity issues, use `-l` repeats:
 
-```bash
+```shell-session
 # Show LOW severity issues and above
 gixy -l
 
@@ -105,14 +104,14 @@ gixy -lll
 
 You can run a focused subset of checks with `--tests`:
 
-```bash
+```shell-session
 # Only run these checks
 gixy --tests http_splitting,ssrf,version_disclosure
 ```
 
 Or skip a few noisy checks with `--skips`:
 
-```bash
+```shell-session
 # Run everything except these checks
 gixy --skips low_keepalive_requests,worker_rlimit_nofile_vs_connections
 ```
@@ -121,7 +120,7 @@ gixy --skips low_keepalive_requests,worker_rlimit_nofile_vs_connections
 
 `gixy` can print to the console for humans or emit clean output for tooling:
 
-```bash
+```shell-session
 # Console (default): colored outputs, readable sections.
 gixy -f console
 
@@ -136,7 +135,7 @@ gixy -f json
 
 To save the report instead of printing it:
 
-```bash
+```shell-session
 # Write plain text output to a file
 gixy -f text -o gixy-report.txt
 
@@ -148,7 +147,7 @@ gixy -f json -o gixy-report.json
 
 If something looks off (missing includes, weird parsing, unexpected results), debug mode is your friend:
 
-```bash
+```shell-session
 # Enable debug mode
 gixy --debug
 ```
@@ -157,7 +156,7 @@ gixy --debug
 
 By default, `gixy` processes `include` directives so it can analyze the full config tree. If you want to treat the input file as standalone, you can disable include processing:
 
-```bash
+```shell-session
 # Do not read any files that are referenced in 'include' directives
 gixy --disable-includes /path/to/nginx.conf
 ```
@@ -168,7 +167,7 @@ When scanning a rendered `nginx -T` dump, leaving includes enabled is usually fi
 
 If you ever see warnings about unknown variables, you may wish to specify them manually. You can point `gixy` to a directory containing files which define additional variables:
 
-```bash
+```shell-session
 # Read all the *.cfg and *.conf files in ./vars,/etc/gixy/vars
 gixy --vars-dirs ./vars,/etc/gixy/vars
 ```
@@ -189,14 +188,14 @@ If you need to tune a specific plugin, start with its documentation:
 
 If you do not want to pass the same flags every time you run `gixy`, you can load options from a config file:
 
-```bash
+```shell-session
 # Load gixy configuration file from ./gixy.conf
 gixy --config ./gixy.conf
 ```
 
 You can also generate a config file from your current CLI arguments:
 
-```bash
+```shell-session
 # Write a gixy configuration file to ./gixy.conf
 gixy --write-config ./gixy.conf
 ```
